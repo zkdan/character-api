@@ -15,13 +15,19 @@ const app = express();
 
 // which port has our information - this can be any number.
 // when we make our API live, it will be determined by where our API is hosted.
-const port = process.env.MONGODB_URI || 3000;
+const port = process.env.PORT || 3000;
+
+const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/characters';
 
 // parse requests, we want them to be JSON
 // app.use(bodyParser.json())
 
+// mongoose.connect(dbURL);
+
+// basic get request
 app.get('/', (req, res) => {
-  res.json({ "message": "Yes! It's working!" });
+    res.json({ "message": "Yes! It's working!" });
+    return;
 });
 
 // listen on port 3000
