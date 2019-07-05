@@ -15,7 +15,7 @@ const app = express();
 
 // which port has our information - this can be any number.
 // when we make our API live, it will be determined by where our API is hosted.
-const port = 3000;
+const port = process.env.MONGODB_URI || 3000;
 
 // parse requests, we want them to be JSON
 // app.use(bodyParser.json())
