@@ -38,10 +38,11 @@ router.route('/')
 
 router.route('/names')
   .get((req, res) => {
-    res.json({ "message": "This is names!" });
+    res.json(res);
   });
 router.route('/names/:first-letter')
   .get((req, res) => {
+    Name.find({},)
     const firstLetter = req.params.firstLetter;
 
     res.json({ "message": `This is /names/${firstLetter}!` });
