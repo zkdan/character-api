@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 // we create an app using express's express() function
 const app = express();
 
+const router = express.Router();
 // which port has our information - this can be any number.
 // when we make our API live, it will be determined by where our API is hosted.
 const port = process.env.PORT || 3000;
@@ -25,10 +26,33 @@ const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/characters';
 // mongoose.connect(dbURL);
 
 // basic get request
-app.get('/', (req, res) => {
+// app.get('/', (req, res) => {
+//     res.json({ "message": "Yes! It's working!" });
+//     return;
+// });
+
+router.route('/')
+  .get((req, res) => {
     res.json({ "message": "Yes! It's working!" });
-    return;
-});
+  });
+
+router.route('/names')
+  .get((req, res) => {
+    res.json({ "message": "This is names!" });
+  });
+router.route('/names/:first-letter')
+  .get((req, res) => {
+    const firstLetter = req.params.firstLetter;
+
+    res.json({ "message": `This is /names/${firstLetter}!` });
+  });
+
+router.route('/characteristics')
+  .get((req, res) => {
+    res.json({ "message": "characteristics" });
+  });
+
+app.use('/api', router);
 
 // listen on port 3000
 app.listen(port, () => {
