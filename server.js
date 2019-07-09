@@ -19,11 +19,16 @@ const router = express.Router();
 const port = process.env.PORT || 3000;
 
 const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/characters';
-
+const SingleName = require('./models/single-name.js');
+const TestSchema = mongoose.Schema({
+  "first": Array,
+  "second": Array
+});
+const Test = mongoose.model('Test', TestSchema);
 // parse requests, we want them to be JSON
-// app.use(bodyParser.json())
+app.use(bodyParser.json())
 
-// mongoose.connect(dbURL);
+mongoose.connect(dbURL, { useNewUrlParser: true });
 
 // basic get request
 // app.get('/', (req, res) => {
@@ -31,22 +36,69 @@ const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/characters';
 //     return;
 // });
 
+
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+
 router.route('/')
   .get((req, res) => {
     res.json({ "message": "Yes! It's working!" });
   });
 
-router.route('/names')
+router.route('/test')
   .get((req, res) => {
-    res.json(res);
-  });
-router.route('/names/:first-letter')
-  .get((req, res) => {
-    Name.find({},)
-    const firstLetter = req.params.firstLetter;
+    // res.json({ "message": "names" });
 
-    res.json({ "message": `This is /names/${firstLetter}!` });
+    Test.find({}, (err, docs) => {
+      console.log('finding the thing')
+      if (err) {
+        res
+          //add a status code
+          .status(400) // here, the fetcher will ask for a format, and you'll just give that
+          .send({
+            message: 'no way no'
+          })
+          // has the headers / content type
+          // tells the API to send back json
+          .json({
+            message: 'wuuuutttttttttttt.'
+          });
+        return;
+      }
+      res
+        .status(200)
+        .json(docs)
+        console.log(docs)
+    });
+
   });
+
+
+// router.route('/names/name')
+//   .get((req, res) => {
+//     const firstLetter = req.params.firstLetter;
+//     SingleName.find({ "name":firstLetter}, (err, docs) =>{
+//       if (err) {
+//         res
+//           //add a status code
+//           .status(400) // here, the fetcher will ask for a format, and you'll just give that
+//           .send({
+//             message: 'no way no'
+//           })
+//           // has the headers / content type
+//           // tells the API to send back json
+//           .json({
+//             message: 'wuuuutttttttttttt.'
+//           });
+//         return;
+//       }
+//       res
+//         .status(200)
+//         .send(docs);
+//     });
+
+//     res.json({ "message": `This is /names/${firstLetter}!` });
+//   });
 
 router.route('/characteristics')
   .get((req, res) => {
